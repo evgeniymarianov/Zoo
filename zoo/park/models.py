@@ -9,10 +9,10 @@ class Category(models.Model):
     """Категории животных"""
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField()
-    name = models.CharField("Категория", max_length=150)
+    name = models.CharField("Название", max_length=150)
     description = models.TextField("Описание")
     url = models.SlugField(max_length=160, unique=True)
-    dangerous = models.BooleanField("Черновик", default=False)
+    dangerous = models.BooleanField("Опасен для человека", default=False)
 
     def __str__(self):
         return self.name
@@ -26,7 +26,7 @@ class Space(models.Model):
     """Помещения животных"""
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField()
-    name = models.CharField("Имя", max_length=100)
+    name = models.CharField("Название", max_length=100)
     type = models.CharField(choices = (
             ('Cage', 'Cage'),
             ('Enclosure', 'Enclosure'),

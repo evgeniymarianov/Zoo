@@ -7,9 +7,11 @@ from .serializers import (
     SpaceListSerializer,
 )
 from .service import AnimalFilter, SpaceFilter
+from rest_framework.generics import CreateAPIView, ListAPIView
+from django.db.models import Count
 
 class AnimalListView(generics.ListAPIView):
-    """Вывод списка фильмов"""
+    """Вывод списка животных"""
     serializer_class = AnimalListSerializer
     filter_backends = (DjangoFilterBackend,)
     filterset_class = AnimalFilter
@@ -17,8 +19,15 @@ class AnimalListView(generics.ListAPIView):
 
 
 class SpaceListView(generics.ListAPIView):
-    """Вывод списка вольеров"""
+    """Вывод списка вольеров у которых число животных больше чем 'q' """
     serializer_class = SpaceListSerializer
     filter_backends = (DjangoFilterBackend,)
     filterset_class = SpaceFilter
-    queryset = Space.objects.all()
+
+    def get_queryset(self, *args, **kwargs):
+        queryset_list = Space.objects.all()
+        query = self.request.GET.get("q")
+        if query:
+            queryset_list = Space.objects.annotate(num_animals=Count('animals')).filter(num_animals__gt=query)
+        print(queryset_list)
+        return queryset_list
