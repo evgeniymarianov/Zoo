@@ -83,7 +83,7 @@ class Employee(models.Model):
     animals = models.ManyToManyField(Animal)
 
     def __str__(self):
-        return self.name
+        return self.firstname
 
     class Meta:
         verbose_name = "Сотрудник"
@@ -95,8 +95,8 @@ class CarePeriod(models.Model):
     created_at = models.DateTimeField(auto_now=True)
     ended_at = models.DateTimeField()
     updated_at = models.DateTimeField()
-    animal = models.ForeignKey(Animal, on_delete=models.PROTECT)
-    employee = models.ForeignKey(Employee, on_delete=models.PROTECT)
+    animal = models.ForeignKey(Animal, on_delete=models.PROTECT, related_name="careperiods")
+    employee = models.ForeignKey(Employee, on_delete=models.PROTECT, related_name="careperiods")
 
     def duration_over_a_year(self):
-        return self.created_at >= timezone.now() - datetime.timedelta(days=365)
+        return self.created_at > timezone.now() - datetime.timedelta(days=365)

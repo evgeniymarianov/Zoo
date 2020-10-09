@@ -16,3 +16,18 @@ class SpaceFilter(rest_framework.FilterSet):
     class Meta:
         model = Space
         fields = '__all__'
+
+
+class AnimalFilter2(rest_framework.FilterSet):
+    careperiods = rest_framework.CharFilter(method ="filter_by_careperiods")
+
+    class Meta:
+        model = Animal
+        fields = ["name", "careperiods", "description"]
+
+    def filter_by_careperiods(self, queryset, name, value):
+        print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
+        print(queryset)
+        print(value)
+        careperiods = CarePeriod.objects.all()
+        return queryset
