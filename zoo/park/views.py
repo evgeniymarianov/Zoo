@@ -26,9 +26,11 @@ class SpaceListView(generics.ListAPIView):
 
     def get_queryset(self, *args, **kwargs):
         queryset_list = Space.objects.all()
-        query = self.request.GET.get("q")
-        if query:
-            queryset_list = Space.objects.annotate(num_animals=Count('animals')).filter(num_animals__gt=query)
+        more_than_two_animals = self.request.query_params.get('more_than_two_animals', '')
+        if more_than_two_animals:
+            if more_than_two_animals == 'True':
+                queryset_list = Space.objects.annotate(num_animals=Count('animals')).filter(num_animals__gt=2)
+                return queryset_list
         print(queryset_list)
         return queryset_list
 
