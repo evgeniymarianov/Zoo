@@ -5,25 +5,8 @@ from django.utils import timezone
 from django.urls import reverse
 
 
-class Category(models.Model):
-    """Категории животных"""
-    created_at = models.DateTimeField(auto_now=True)
-    updated_at = models.DateTimeField()
-    name = models.CharField("Название", max_length=150)
-    description = models.TextField("Описание")
-    url = models.SlugField(max_length=160, unique=True)
-    dangerous = models.BooleanField("Опасен для человека", default=False)
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name = "Категория"
-        verbose_name_plural = "Категории"
-
-
 class Space(models.Model):
-    """Помещения животных"""
+    """Помещения для видов животных"""
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField()
     name = models.CharField("Название", max_length=100)
@@ -49,6 +32,24 @@ class Space(models.Model):
         return self.objects.annotate(num_animals=Count('animals')).filter(num_animals__gt=2)
 
 
+class Category(models.Model):
+    """Категории животных"""
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField()
+    name = models.CharField("Название", max_length=150)
+    description = models.TextField("Описание")
+    url = models.SlugField(max_length=160, unique=True)
+    dangerous = models.BooleanField("Опасен для человека", default=False)
+    space = models.ForeignKey(Space, on_delete=models.PROTECT, related_name="categories")
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Категория"
+        verbose_name_plural = "Категории"
+
+
 class Animal(models.Model):
     """Животные"""
     created_at = models.DateTimeField(auto_now=True)
@@ -61,7 +62,6 @@ class Animal(models.Model):
             ('Male', 'Male'),
         ),
         max_length=15)
-    space = models.ForeignKey(Space, on_delete=models.PROTECT, related_name="animals")
     category = models.ForeignKey(Category, on_delete=models.PROTECT)
 
     def __str__(self):
@@ -80,7 +80,6 @@ class Employee(models.Model):
     lastname = models.CharField("Фамилия", max_length=100)
     age = models.PositiveSmallIntegerField("Возраст", default=0)
     description = models.TextField("Описание")
-    animals = models.ManyToManyField(Animal)
 
     def __str__(self):
         return self.firstname
@@ -91,12 +90,30 @@ class Employee(models.Model):
 
 
 class CarePeriod(models.Model):
-    """Периоды ухода за животными животными"""
+    """Периоды ухода за животными"""
     created_at = models.DateTimeField(auto_now=True)
     ended_at = models.DateTimeField()
     updated_at = models.DateTimeField()
     animal = models.ForeignKey(Animal, on_delete=models.PROTECT, related_name="careperiods")
     employee = models.ForeignKey(Employee, on_delete=models.PROTECT, related_name="careperiods")
 
-    def duration_over_a_year(self):
-        return self.created_at > timezone.now() - datetime.timedelta(days=365)
+    def duration_longer_than_n_days(self, n=365):
+        return self.created_at > timezone.now() - datetime.timedelta(days=n)
+
+    def duration_less_than_n_days(self, n=365):
+        return self.created_at < timezone.now() - datetime.timedelta(days=n)
+
+
+class PlacementPeriod(models.Model):
+    """Периоды рахмещения животных в вольерах"""
+    created_at = models.DateTimeField(auto_now=True)
+    ended_at = models.DateTimeField()
+    updated_at = models.DateTimeField()
+    category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name="placementperiod")
+    space = models.ForeignKey(Space, on_delete=models.PROTECT, related_name="placementperiod")
+
+    def duration_longer_than_n_days(self, n=365):
+        return self.created_at > timezone.now() - datetime.timedelta(days=n)
+
+    def duration_less_than_n_days(self, n=365):
+        return self.created_at < timezone.now() - datetime.timedelta(days=n)

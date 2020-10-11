@@ -6,16 +6,16 @@ from .serializers import (
     AnimalListSerializer,
     SpaceListSerializer,
 )
-from .service import AnimalFilter, SpaceFilter, AnimalFilter2
+from .service import SpaceFilter, AnimalFilter2
 from rest_framework.generics import CreateAPIView, ListAPIView
 from django.db.models import Count
 
-class AnimalListView(generics.ListAPIView):
-    """Вывод списка животных"""
-    serializer_class = AnimalListSerializer
-    filter_backends = (DjangoFilterBackend,)
-    filterset_class = AnimalFilter
-    queryset = Animal.objects.all()
+#class AnimalListView(generics.ListAPIView):
+#    """Вывод списка животных"""
+#    serializer_class = AnimalListSerializer
+#    filter_backends = (DjangoFilterBackend,)
+#    filterset_class = AnimalFilter
+#    queryset = Animal.objects.all()
 
 
 class SpaceListView(generics.ListAPIView):
@@ -29,7 +29,7 @@ class SpaceListView(generics.ListAPIView):
         more_than_two_animals = self.request.query_params.get('more_than_two_animals', '')
         if more_than_two_animals:
             if more_than_two_animals == 'True':
-                queryset_list = Space.objects.annotate(num_animals=Count('animals')).filter(num_animals__gt=2)
+                queryset_list = Space.objects.annotate(num_animals=Count('categories')).filter(num_animals__gt=2)
                 return queryset_list
         print(queryset_list)
         return queryset_list
