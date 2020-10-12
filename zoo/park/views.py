@@ -6,7 +6,7 @@ from .serializers import (
     AnimalListSerializer,
     SpaceListSerializer,
 )
-from .service import SpaceFilter, AnimalFilter2
+from .service import SpaceFilter, AnimalFilter
 from rest_framework.generics import CreateAPIView, ListAPIView
 from django.db.models import Count
 
@@ -19,24 +19,25 @@ from django.db.models import Count
 
 
 class SpaceListView(generics.ListAPIView):
-    """Вывод списка вольеров у которых число животных больше чем 'q' """
+    """Вывод списка вольеров у которых видов животных больше чем 2 """
     serializer_class = SpaceListSerializer
     filter_backends = (DjangoFilterBackend,)
     filterset_class = SpaceFilter
+    queryset = Space.objects.all()
 
-    def get_queryset(self, *args, **kwargs):
-        queryset_list = Space.objects.all()
-        more_than_two_animals = self.request.query_params.get('more_than_two_animals', '')
-        if more_than_two_animals:
-            if more_than_two_animals == 'True':
-                queryset_list = Space.objects.annotate(num_animals=Count('categories')).filter(num_animals__gt=2)
-                return queryset_list
-        print(queryset_list)
-        return queryset_list
+#    def get_queryset(self, *args, **kwargs):
+#        queryset_list = Space.objects.all()
+#        more_than_two_categories = self.request.query_params.get('more_than_two_categories', '')
+#        if more_than_two_categories:
+#            if more_than_two_categories == 'True':
+#                queryset_list = Space.objects.annotate(num_categories=Count('categories')).filter(num_categories__gt=2)
+#                return queryset_list
+#        print(queryset_list)
+#        return queryset_list
 
 
 class AnimalViewSet(viewsets.ModelViewSet):
     serializer_class = AnimalListSerializer
     filter_backends = (DjangoFilterBackend,)
-    filterset_class = AnimalFilter2
+    filterset_class = AnimalFilter
     queryset = Animal.objects.all()

@@ -10,9 +10,17 @@ class AnimalListSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class CategoryListSerializer(serializers.ModelSerializer):
+    """Список животных"""
+
+    class Meta:
+        model = Category
+        fields = "__all__"
+
+
 class SpaceListSerializer(serializers.ModelSerializer):
     """Список помещений"""
-    animals = AnimalListSerializer(many=True)
+    categories = CategoryListSerializer(many=True)
 
     class Meta:
         model = Space
