@@ -6,7 +6,7 @@ from django.urls import reverse
 
 
 class Space(models.Model):
-    """Помещения для видов животных"""
+    """Места для видов животных"""
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField()
     name = models.CharField("Название", max_length=100)
@@ -25,8 +25,8 @@ class Space(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = "Помещение"
-        verbose_name_plural = "Помещения"
+        verbose_name = "Место"
+        verbose_name_plural = "Места"
 
     def more_two(self):
         return self.objects.annotate(num_animals=Count('categories')).filter(num_animals__gt=2)
@@ -62,7 +62,15 @@ class Animal(models.Model):
             ('Male', 'Male'),
         ),
         max_length=15)
-    category = models.ForeignKey(Category, on_delete=models.PROTECT)
+    category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name="animals")
+    color = models.CharField(null=True, choices = (
+            ('Orange', 'Orange'),
+            ('Black', 'Black'),
+            ('White', 'White'),
+            ('Brown', 'Brown'),
+            ('Grey', 'Grey'),
+        ),
+        max_length=15)
 
     def __str__(self):
         return self.name
@@ -91,14 +99,17 @@ class Employee(models.Model):
 
 class CarePeriod(models.Model):
     """Периоды ухода за животными"""
-    created_at = models.DateTimeField(auto_now=True)
-    ended_at = models.DateTimeField(null=True)
+    created_at = models.DateTimeField()
+    ended_at = models.DateTimeField(null=True, blank=True, default=None)
     updated_at = models.DateTimeField()
     animal = models.ForeignKey(Animal, on_delete=models.PROTECT, related_name="careperiods")
     employee = models.ForeignKey(Employee, on_delete=models.PROTECT, related_name="careperiods")
 
     def continues_more_than_n_days(self, n=365):
         return not self.ended_at and self.created_at > timezone.now() - datetime.timedelta(days=n)
+
+    def continues_less_than_n_days(self, n=365):
+        return not self.ended_at and self.created_at < timezone.now() - datetime.timedelta(days=n)
 
     class Meta:
         verbose_name = "Период ухода"
@@ -112,11 +123,11 @@ class PlacementPeriod(models.Model):
     category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name="placementperiods")
     space = models.ForeignKey(Space, on_delete=models.PROTECT, related_name="placementperiods")
 
-    def duration_longer_than_n_days(self, n=365):
-        return self.created_at > timezone.now() - datetime.timedelta(days=n)
+    def continues_more_than_n_days(self, n=365):
+        return not self.ended_at and self.created_at > timezone.now() - datetime.timedelta(days=n)
 
-    def duration_less_than_n_days(self, n=365):
-        return self.created_at < timezone.now() - datetime.timedelta(days=n)
+    def continues_less_than_n_days(self, n=365):
+        return not self.ended_at and self.created_at < timezone.now() - datetime.timedelta(days=n)
 
     class Meta:
         verbose_name = "Период размещения"

@@ -20,7 +20,12 @@ class SpaceFilter(rest_framework.FilterSet):
         "illumination",
         "type",
         "square",
-        "category__animals",
+        "categories__animals__name",
+        "categories__animals__description",
+        "categories__animals__gender",
+        "categories__animals__age",
+        "categories__animals__created_at",
+        "categories__animals__color",
         ]
 
     def filter_by_categories_count(self, queryset, name, value):
@@ -29,14 +34,9 @@ class SpaceFilter(rest_framework.FilterSet):
 
 
 class AnimalFilter(rest_framework.FilterSet):
-    category__space = rest_framework.ModelMultipleChoiceFilter(
-    queryset=Space.objects.all(),
-    widget= forms.CheckboxSelectMultiple
-    )
 
     class Meta:
         model = Animal
-        #fields = ['category__space', "name", "age"]
         fields = [
             "category__space__name",
             "category__space__created_at",
@@ -45,3 +45,14 @@ class AnimalFilter(rest_framework.FilterSet):
             "category__space__square",
             "category__space__illumination",
            ]
+
+
+class AnimalFilter2(rest_framework.FilterSet):
+    careperiod__employee = filters.ModelChoiceFilter(
+        label=('Содержится видов животных больше чем n:'),
+        queryset=Employee.objects.all()
+    )
+
+    class Meta:
+        model = Animal
+        fields = ['name']
