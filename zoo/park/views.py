@@ -11,8 +11,7 @@ from rest_framework.generics import CreateAPIView, ListAPIView
 from django.db.models import Count
 from datetime import timedelta
 from django.db.models import F
-import datetime
-from datetime import date
+from datetime import datetime, date
 from django.utils import timezone
 
 
@@ -42,18 +41,13 @@ class AnimalViewSet2(viewsets.ModelViewSet):
 
     def get_queryset(self, *args, **kwargs):
         employee_id = self.request.query_params.get('careperiods__employee', '')
-        print('ID   empl>>>>>>>>>>>>' + str(employee_id))
         if employee_id:
             employee = Employee.objects.get(id=employee_id)
-            print('empl>>>>>>>>>>>>' + str(employee))
             queryset_list = Animal.objects.filter(
-            #careperiods__created_at__gt=F(datetime.date.today() - datetime.timedelta(days=365)),
+            careperiods__created_at__gt=datetime.now()-timedelta(days=365),
             careperiods__ended_at__isnull=True,
             careperiods__employee=employee
             ).distinct()
-            print('IF   queryset_listl>>>>>>>>>>>>' + str(queryset_list))
             return queryset_list
-            print('FIn!!!!!!!!!!!!!!!!!!')
         queryset_list = Animal.objects.all()
-        print(queryset_list)
         return queryset_list
