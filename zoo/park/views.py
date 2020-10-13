@@ -31,13 +31,10 @@ class AnimalViewSet(viewsets.ModelViewSet):
     queryset = Animal.objects.all()
 
 
-class AnimalViewSet2(viewsets.ModelViewSet):
+class AnimalViewSet2(AnimalViewSet):
     """Вывод списка животных, за которыми закреплен один и тот же \n
     сотрудник более 1 года."""
-    serializer_class = AnimalListSerializer
-    filter_backends = (DjangoFilterBackend,)
     filterset_class = AnimalFilter2
-    queryset = None
 
     def get_queryset(self, *args, **kwargs):
         employee_id = self.request.query_params.get('careperiods__employee', '')

@@ -52,8 +52,7 @@ class AnimalFilter2(rest_framework.FilterSet):
         label=('Закреплённый сотрудник'),
         queryset=Employee.objects.all()
     )
-    # DurationFilter
-    # careperiods__created_at__gt
+
     class Meta:
         model = Animal
-        fields = ['name']
+        fields = ['careperiods__employee']
