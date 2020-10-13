@@ -48,11 +48,12 @@ class AnimalFilter(rest_framework.FilterSet):
 
 
 class AnimalFilter2(rest_framework.FilterSet):
-    careperiod__employee = filters.ModelChoiceFilter(
-        label=('Содержится видов животных больше чем n:'),
+    careperiods__employee = filters.ModelChoiceFilter(
+        label=('Закреплённый сотрудник'),
         queryset=Employee.objects.all()
     )
-
+    # DurationFilter
+    # careperiods__created_at__gt
     class Meta:
         model = Animal
         fields = ['name']
