@@ -50,7 +50,7 @@ class AnimalViewSet2(viewsets.ModelViewSet):
             #careperiods__created_at__gt=F(datetime.date.today() - datetime.timedelta(days=365)),
             careperiods__ended_at__isnull=True,
             careperiods__employee=employee
-            )
+            ).distinct()
             print('IF   queryset_listl>>>>>>>>>>>>' + str(queryset_list))
             return queryset_list
             print('FIn!!!!!!!!!!!!!!!!!!')
