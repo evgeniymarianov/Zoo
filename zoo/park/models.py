@@ -62,7 +62,7 @@ class Animal(models.Model):
             ('Male', 'Male'),
         ),
         max_length=15)
-    category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name="animals")
+    category = models.ForeignKey(Category, verbose_name="Категория", on_delete=models.PROTECT, related_name="animals")
     color = models.CharField(null=True, choices = (
             ('Orange', 'Orange'),
             ('Black', 'Black'),

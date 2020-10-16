@@ -10,6 +10,12 @@ class SpaceFilter(rest_framework.FilterSet):
         label=('Содержится видов животных больше чем n:'),
         method ="filter_by_categories_count"
     )
+    categories__animals__name = filters.CharFilter(label=('Фильтр по:'))
+    categories__animals__description = filters.CharFilter(label=('Фильтр по описанию животного:'))
+    categories__animals__gender = filters.CharFilter(label=('Фильтр по полу животного:'))
+    categories__animals__age = filters.CharFilter(label=('Фильтр по возрасту животного:'))
+    categories__animals__created_at = filters.CharFilter(label=('Фильтр по дате появления животного:'))
+    categories__animals__color = filters.CharFilter(label=('Фильтр по цвету животного:'))
 
     class Meta:
         model = Space
@@ -34,6 +40,12 @@ class SpaceFilter(rest_framework.FilterSet):
 
 
 class AnimalFilter(rest_framework.FilterSet):
+    category__space__name = filters.CharFilter(label=('Фильтр по имени вольера:'))
+    category__space__created_at = filters.CharFilter(label=('Фильтр по дате создания вольера:'))
+    category__space__description = filters.CharFilter(label=('Фильтр по описанию вольера:'))
+    category__space__type = filters.CharFilter(label=('Фильтр по типу вольера:'))
+    category__space__square = filters.CharFilter(label=('Фильтр по площади вольера:'))
+    category__space__illumination = filters.CharFilter(label=('Фильтр по типу освещения в вольере:'))
 
     class Meta:
         model = Animal
