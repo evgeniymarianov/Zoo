@@ -47,7 +47,7 @@ class AnimalFilter(rest_framework.FilterSet):
            ]
 
 
-class AnimalFilter2(rest_framework.FilterSet):
+class EmployeesAnimalFilter(rest_framework.FilterSet):
     careperiods__employee = filters.ModelChoiceFilter(
         label=('Закреплённый сотрудник'),
         queryset=Employee.objects.all()

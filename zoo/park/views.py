@@ -6,7 +6,7 @@ from .serializers import (
     AnimalListSerializer,
     SpaceListSerializer,
 )
-from .service import SpaceFilter, AnimalFilter, AnimalFilter2
+from .service import SpaceFilter, AnimalFilter, EmployeesAnimalFilter
 from rest_framework.generics import CreateAPIView, ListAPIView
 from django.db.models import Count
 from datetime import timedelta
@@ -31,10 +31,10 @@ class AnimalViewSet(viewsets.ModelViewSet):
     queryset = Animal.objects.all()
 
 
-class AnimalViewSet2(AnimalViewSet):
+class AnimalOfEmployeeViewSet(AnimalViewSet):
     """Вывод списка животных, за которыми закреплен один и тот же \n
     сотрудник более 1 года."""
-    filterset_class = AnimalFilter2
+    filterset_class = EmployeesAnimalFilter
 
     def get_queryset(self, *args, **kwargs):
         employee_id = self.request.query_params.get('careperiods__employee', '')

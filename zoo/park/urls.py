@@ -7,7 +7,7 @@ urlpatterns = [
     #path('animals/', views.AnimalListView.as_view()),
     path('spaces/', views.SpaceListView.as_view()),
     path('animals/', views.AnimalViewSet.as_view({'get': 'list'})),
-    path('animals2/', views.AnimalViewSet2.as_view({'get': 'list'})),
+    path('employees_animals/', views.AnimalOfEmployeeViewSet.as_view({'get': 'list'})),
     #path('gift/<int:pk>/', views.GiftViewSet.as_view({'get': 'retrieve'})),
 ]
 
