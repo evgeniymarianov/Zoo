@@ -1,4 +1,4 @@
-from .models import Animal, Employee, Category, CarePeriod, Space
+from .models import Animal, Employee, Category, CarePeriod, Space, PlacementPeriod
 from rest_framework import serializers
 
 
@@ -52,7 +52,6 @@ class SpaceListSerializer(serializers.ModelSerializer):
 
 class EmployeeListSerializer(serializers.ModelSerializer):
     """Список сотрудников"""
-    categories = CategoryListSerializer(many=True)
     careperiods = serializers.SlugRelatedField(slug_field='created_at', read_only=True, many=True)
 
     class Meta:
