@@ -40,7 +40,6 @@ class Category(models.Model):
     description = models.TextField("Описание")
     url = models.SlugField(max_length=160, unique=True)
     dangerous = models.BooleanField("Опасен для человека", default=False)
-    space = models.ForeignKey(Space, on_delete=models.PROTECT, related_name="categories")
 
     def __str__(self):
         return self.name

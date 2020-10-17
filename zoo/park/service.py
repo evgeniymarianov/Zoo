@@ -21,7 +21,7 @@ class SpaceFilter(rest_framework.FilterSet):
         model = Space
         fields = [
         "name",
-        "categories",
+        "placementperiods",
         "description",
         "illumination",
         "type",

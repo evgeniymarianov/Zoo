@@ -3,6 +3,7 @@ from rest_framework import serializers
 
 
 class CarePeriodSerializer(serializers.ModelSerializer):
+    """Список периодов ухода за животными"""
     employee = serializers.SlugRelatedField(slug_field='firstname', read_only=True)
     animal = serializers.SlugRelatedField(slug_field='name', read_only=True)
 
@@ -12,6 +13,7 @@ class CarePeriodSerializer(serializers.ModelSerializer):
 
 
 class PlacementPeriodSerializer(serializers.ModelSerializer):
+    """Список периодов размещения животных в вольерах"""
     category = serializers.SlugRelatedField(slug_field='firstname', read_only=True)
     space = serializers.SlugRelatedField(slug_field='name', read_only=True)
 
@@ -43,7 +45,7 @@ class CategoryListSerializer(serializers.ModelSerializer):
 
 class SpaceListSerializer(serializers.ModelSerializer):
     """Список вольеров"""
-    categories = CategoryListSerializer(many=True)
+    placementperiods = PlacementPeriodSerializer(many=True)
 
     class Meta:
         model = Space
