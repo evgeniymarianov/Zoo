@@ -6,6 +6,7 @@ from .serializers import (
     AnimalListSerializer,
     SpaceListSerializer,
     CategoryListSerializer,
+    EmployeeListSerializer
 )
 from .service import SpaceFilter, AnimalFilter, EmployeesAnimalFilter
 from rest_framework.generics import CreateAPIView, ListAPIView
@@ -28,7 +29,6 @@ class CategoryListView(generics.ListAPIView):
     """Вывод списка вольеров по параметрам животных"""
     serializer_class = CategoryListSerializer
     filter_backends = (DjangoFilterBackend,)
-    #filterset_class =
     queryset = Category.objects.all()
 
 
@@ -57,3 +57,10 @@ class AnimalOfEmployeeViewSet(AnimalViewSet):
             return queryset_list
         queryset_list = Animal.objects.all()
         return queryset_list
+
+
+class EmployeeListView(generics.ListAPIView):
+    """Вывод списка вольеров по параметрам животных"""
+    serializer_class = EmployeeListSerializer
+    filter_backends = (DjangoFilterBackend,)
+    queryset = Employee.objects.all()
