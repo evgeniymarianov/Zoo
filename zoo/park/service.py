@@ -10,7 +10,7 @@ class SpaceFilter(rest_framework.FilterSet):
         label=('Содержится видов животных больше чем n:'),
         method ="filter_by_categories_count"
     )
-    categories__animals__name = filters.CharFilter(label=('Фильтр по:'))
+    categories__animals__name = filters.CharFilter(label=('Фильтр по имени животного:'))
     categories__animals__description = filters.CharFilter(label=('Фильтр по описанию животного:'))
     categories__animals__gender = filters.CharFilter(label=('Фильтр по полу животного:'))
     categories__animals__age = filters.CharFilter(label=('Фильтр по возрасту животного:'))

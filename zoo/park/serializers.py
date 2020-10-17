@@ -11,7 +11,8 @@ class AnimalListSerializer(serializers.ModelSerializer):
 
 
 class CategoryListSerializer(serializers.ModelSerializer):
-    """Список животных"""
+    """Список видов животных"""
+    animals = AnimalListSerializer(many=True)
 
     class Meta:
         model = Category
@@ -19,7 +20,7 @@ class CategoryListSerializer(serializers.ModelSerializer):
 
 
 class SpaceListSerializer(serializers.ModelSerializer):
-    """Список помещений"""
+    """Список вольеров"""
     categories = CategoryListSerializer(many=True)
 
     class Meta:
