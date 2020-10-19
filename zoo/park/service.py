@@ -68,3 +68,10 @@ class EmployeesAnimalFilter(rest_framework.FilterSet):
     class Meta:
         model = Animal
         fields = ['careperiods__employee']
+
+
+class CategoryFilter(rest_framework.FilterSet):
+
+    class Meta:
+        model = Category
+        fields = '__all__'

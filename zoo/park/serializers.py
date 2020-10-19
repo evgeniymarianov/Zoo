@@ -76,3 +76,13 @@ class SpaceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Space
         fields = "__all__"
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    """Список видов животных"""
+    animals = serializers.SlugRelatedField(slug_field='name', read_only=True, many=True)
+    space = serializers.SlugRelatedField(slug_field='name', read_only=True)
+
+    class Meta:
+        model = Category
+        fields = "__all__"

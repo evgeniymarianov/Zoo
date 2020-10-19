@@ -29,7 +29,7 @@ class Space(models.Model):
         verbose_name_plural = "Места"
 
     def more_two(self):
-        return self.objects.annotate(num_animals=Count('categories')).filter(num_animals__gt=2)
+        return self.objects.annotate(num_categories=Count('categories')).filter(num_categories__gt=2)
 
 
 class Category(models.Model):
