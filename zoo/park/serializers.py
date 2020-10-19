@@ -22,53 +22,6 @@ class PlacementPeriodSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class AnimalListSerializer(serializers.ModelSerializer):
-    """Список животных"""
-    category = serializers.SlugRelatedField(slug_field='name', read_only=True)
-    #careperiods = serializers.SlugRelatedField(slug_field='created_at', read_only=True, many=True)
-    careperiods = CarePeriodSerializer(many=True)
-
-    class Meta:
-        model = Animal
-        fields = "__all__"
-
-
-class AnimalCreateSerializer(serializers.ModelSerializer):
-    """Добавление животного"""
-
-    class Meta:
-        model = Animal
-        fields = "__all__"
-
-
-class CategoryListSerializer(serializers.ModelSerializer):
-    """Список видов животных"""
-    animals = serializers.SlugRelatedField(slug_field='name', read_only=True, many=True)
-    space = serializers.SlugRelatedField(slug_field='name', read_only=True)
-
-    class Meta:
-        model = Category
-        fields = "__all__"
-
-
-class SpaceListSerializer(serializers.ModelSerializer):
-    """Список вольеров"""
-    placementperiods = PlacementPeriodSerializer(many=True)
-
-    class Meta:
-        model = Space
-        fields = "__all__"
-
-
-class EmployeeListSerializer(serializers.ModelSerializer):
-    """Список сотрудников"""
-    careperiods = serializers.SlugRelatedField(slug_field='created_at', read_only=True, many=True)
-
-    class Meta:
-        model = Employee
-        fields = "__all__"
-
-
 class SpaceSerializer(serializers.ModelSerializer):
     """Список вольеров"""
     placementperiods = PlacementPeriodSerializer(many=True)
@@ -85,4 +38,23 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
+        fields = "__all__"
+
+
+class AnimalSerializer(serializers.ModelSerializer):
+    """Список животных"""
+    category = serializers.SlugRelatedField(slug_field='name', read_only=True)
+    careperiods = CarePeriodSerializer(many=True)
+
+    class Meta:
+        model = Animal
+        fields = "__all__"
+
+
+class EmployeeSerializer(serializers.ModelSerializer):
+    """Список сотрудников"""
+    careperiods = serializers.SlugRelatedField(slug_field='created_at', read_only=True, many=True)
+
+    class Meta:
+        model = Employee
         fields = "__all__"

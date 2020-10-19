@@ -75,3 +75,10 @@ class CategoryFilter(rest_framework.FilterSet):
     class Meta:
         model = Category
         fields = '__all__'
+
+
+class EmployeeFilter(rest_framework.FilterSet):
+
+    class Meta:
+        model = Employee
+        fields = '__all__'
