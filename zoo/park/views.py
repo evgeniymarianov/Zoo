@@ -6,7 +6,8 @@ from .serializers import (
     AnimalListSerializer,
     SpaceListSerializer,
     CategoryListSerializer,
-    EmployeeListSerializer
+    EmployeeListSerializer,
+    AnimalCreateSerializer
 )
 from .service import SpaceFilter, AnimalFilter, EmployeesAnimalFilter
 from rest_framework.generics import CreateAPIView, ListAPIView
@@ -15,14 +16,30 @@ from datetime import timedelta
 from django.db.models import F
 from datetime import datetime, date
 from django.utils import timezone
+from rest_framework import mixins
 
 
-class SpaceListView(generics.ListAPIView):
+class SpaceListView(mixins.ListModelMixin,
+                    mixins.CreateModelMixin,
+                    generics.GenericAPIView):
     """Вывод списка вольеров по параметрам животных"""
     serializer_class = SpaceListSerializer
     filter_backends = (DjangoFilterBackend,)
     filterset_class = SpaceFilter
     queryset = Space.objects.all()
+
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
 
 
 class CategoryListView(generics.ListAPIView):
@@ -57,6 +74,11 @@ class AnimalOfEmployeeViewSet(AnimalViewSet):
             return queryset_list
         queryset_list = Animal.objects.all()
         return queryset_list
+
+
+class AnimalCreateViewSet(viewsets.ModelViewSet):
+    """Добавление животного"""
+    serializer_class = AnimalCreateSerializer
 
 
 class EmployeeListView(generics.ListAPIView):

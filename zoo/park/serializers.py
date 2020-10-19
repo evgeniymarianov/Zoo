@@ -33,6 +33,14 @@ class AnimalListSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class AnimalCreateSerializer(serializers.ModelSerializer):
+    """Добавление животного"""
+
+    class Meta:
+        model = Animal
+        fields = "__all__"
+
+
 class CategoryListSerializer(serializers.ModelSerializer):
     """Список видов животных"""
     animals = serializers.SlugRelatedField(slug_field='name', read_only=True, many=True)

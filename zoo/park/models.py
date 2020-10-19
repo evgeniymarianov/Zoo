@@ -40,6 +40,9 @@ class Category(models.Model):
     description = models.TextField("Описание")
     url = models.SlugField(max_length=160, unique=True)
     dangerous = models.BooleanField("Опасен для человека", default=False)
+    flying = models.BooleanField("Летающий", default=False)
+
+
 
     def __str__(self):
         return self.name
@@ -87,6 +90,12 @@ class Employee(models.Model):
     lastname = models.CharField("Фамилия", max_length=100)
     age = models.PositiveSmallIntegerField("Возраст", default=0)
     description = models.TextField("Описание")
+    gender = models.CharField(choices = (
+            ('Female', 'Female'),
+            ('Male', 'Male'),
+        ),
+        max_length=15,
+        default='Male')
 
     def __str__(self):
         return self.firstname

@@ -8,7 +8,7 @@ urlpatterns = [
     path('spaces/', views.SpaceListView.as_view()),
     path('categories/', views.CategoryListView.as_view()),
     path('employees/', views.EmployeeListView.as_view()),
-    path('animals/', views.AnimalViewSet.as_view({'get': 'list'})),
+    path('animals/', views.AnimalViewSet.as_view({'get': 'list', 'post': 'create'})),
     path('animals_of_employee/', views.AnimalOfEmployeeViewSet.as_view({'get': 'list'})),
     #path('gift/<int:pk>/', views.GiftViewSet.as_view({'get': 'retrieve'})),
 ]
