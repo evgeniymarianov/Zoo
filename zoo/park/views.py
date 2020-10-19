@@ -16,6 +16,39 @@ from django.db.models import F
 from datetime import datetime, date
 from django.utils import timezone
 from rest_framework import mixins
+from django.shortcuts import render, get_object_or_404
+
+
+def is_valid_queryparam(param):
+    return param != '' and param is not None
+
+
+def filter(request):
+    qs = Category.objects.all()
+    name_contains_query = request.GET.get('name_contains')
+    date_min = request.GET.get('date_min')
+    flying = request.GET.get('flying')
+    dangerous = request.GET.get('dangerous')
+
+    if is_valid_queryparam(name_contains_query):
+        qs = qs.filter(name__icontains=name_contains_query)
+
+    if is_valid_queryparam(date_min):
+        qs = qs.filter(created_at__gte=date_min)
+
+    if flying == 'on':
+        qs = qs.filter(flying=True)
+
+    else:
+        qs = qs.filter(flying=False)
+
+    if dangerous == 'on':
+        qs = qs.filter(dangerous=True)
+
+    else:
+        qs = qs.filter(dangerous=False)
+
+    return qs
 
 
 class SpaceList(generics.ListCreateAPIView):
@@ -91,3 +124,12 @@ class EmployeeDetail(generics.RetrieveUpdateDestroyAPIView):
     """Вывод, редакция, удаление сотрудника"""
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
+
+
+def BootstrapFilterView(request):
+    qs = filter(request)
+    context = {
+        'queryset': qs,
+        'spaces': Space.objects.all()
+    }
+    return render(request, "bootstrap_form.html", context)
