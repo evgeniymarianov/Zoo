@@ -7,7 +7,8 @@ from .serializers import (
     SpaceListSerializer,
     CategoryListSerializer,
     EmployeeListSerializer,
-    AnimalCreateSerializer
+    AnimalCreateSerializer,
+    SpaceSerializer
 )
 from .service import SpaceFilter, AnimalFilter, EmployeesAnimalFilter
 from rest_framework.generics import CreateAPIView, ListAPIView
@@ -19,9 +20,7 @@ from django.utils import timezone
 from rest_framework import mixins
 
 
-class SpaceListView(mixins.ListModelMixin,
-                    mixins.CreateModelMixin,
-                    generics.GenericAPIView):
+class SpaceListView(generics.ListCreateAPIView):
     """Вывод списка вольеров по параметрам животных"""
     serializer_class = SpaceListSerializer
     filter_backends = (DjangoFilterBackend,)
@@ -29,17 +28,16 @@ class SpaceListView(mixins.ListModelMixin,
     queryset = Space.objects.all()
 
 
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
+class SpaceList(generics.ListCreateAPIView):
+    queryset = Space.objects.all()
+    serializer_class = SpaceSerializer
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = SpaceFilter
 
-    def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
 
-    def put(self, request, *args, **kwargs):
-        return self.update(request, *args, **kwargs)
-
-    def delete(self, request, *args, **kwargs):
-        return self.destroy(request, *args, **kwargs)
+class SpaceDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Space.objects.all()
+    serializer_class = SpaceSerializer
 
 
 class CategoryListView(generics.ListAPIView):

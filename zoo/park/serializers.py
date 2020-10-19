@@ -67,3 +67,12 @@ class EmployeeListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Employee
         fields = "__all__"
+
+
+class SpaceSerializer(serializers.ModelSerializer):
+    """Список вольеров"""
+    placementperiods = PlacementPeriodSerializer(many=True)
+
+    class Meta:
+        model = Space
+        fields = "__all__"
