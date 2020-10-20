@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'park',
     'django_filters',
+    'bootstrapform'
 ]
 
 MIDDLEWARE = [
@@ -57,7 +58,7 @@ ROOT_URLCONF = 'zoo.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -121,10 +122,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-MEDIA_URL = '/media/'
+#MEDIA_URL = '/media/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media_root')
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
+#MEDIA_ROOT = os.path.join(BASE_DIR, 'media_root')
 
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': (

@@ -1,0 +1,25 @@
+{% extends 'park/base.html' %}
+{% load bootstrap %}
+{% block title %}Category List{% endblock title %}
+
+{% block content %}
+
+
+
+<div class="container">
+
+  <form method="GET">
+    {{ filter.form|bootstrap }}
+    <button type="submit" class="btn btn-primary">Search</button>
+  </form>
+
+    <ul>
+      {% for category in filter.qs %}
+        <li>
+          <a href="{% url 'park:category_detail' category.id %}">{{ category.name }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+
+</div>
+{% endblock content %}

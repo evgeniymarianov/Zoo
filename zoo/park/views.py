@@ -17,6 +17,7 @@ from datetime import datetime, date
 from django.utils import timezone
 from rest_framework import mixins
 from django.shortcuts import render, get_object_or_404
+from django.views.generic import ListView, DetailView
 
 
 def is_valid_queryparam(param):
@@ -26,12 +27,16 @@ def is_valid_queryparam(param):
 def filter(request):
     qs = Category.objects.all()
     name_contains_query = request.GET.get('name_contains')
+    description_contains_query = request.GET.get('description_contains')
     date_min = request.GET.get('date_min')
     flying = request.GET.get('flying')
     dangerous = request.GET.get('dangerous')
 
     if is_valid_queryparam(name_contains_query):
         qs = qs.filter(name__icontains=name_contains_query)
+
+    if is_valid_queryparam(description_contains_query):
+        qs = qs.filter(description__icontains=description_contains_query)
 
     if is_valid_queryparam(date_min):
         qs = qs.filter(created_at__gte=date_min)
@@ -133,3 +138,17 @@ def BootstrapFilterView(request):
         'spaces': Space.objects.all()
     }
     return render(request, "bootstrap_form.html", context)
+
+
+class CategoryListView(ListView):
+    model = Category
+    template_name = 'park/category_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['filter'] = CategoryFilter(self.request.GET, queryset=self.get_queryset())
+        return context
+
+class CategoryDetailView(DetailView):
+    model = Category
+    template_name = 'park/category_detail.html'
