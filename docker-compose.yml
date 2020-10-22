@@ -2,15 +2,10 @@ version: '3'
 services:
   web:
     build: ./zoo
-    ports:
-    - 8000:8000
-    volumes:
-    - ./zoo:/data
+    command: python3 ./manage.py runserver 0.0.0.0:8000
     depends_on:
     - db
     environment:
-      - DEBUG=1
-      - REDIS_HOST=redis
       - DATABASE_URL=postgres://postgres@db/postgres
 
   db:
